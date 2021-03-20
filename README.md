@@ -51,7 +51,9 @@ The syntax of this ML is the following:
     
 - With this design, we can access all the memory addresses since we have **4 digits** in each operand.
 
-**NOTE:** The user should set the accumulator before using an instruction that requires a third operand. 
+**NOTE:** The user should set the accumulator before using an instruction that requires a third operand.
+#### Challenges:
+- We found it a bit hard to design an instruction that gives us the possiblity to access all the memory cells (0 - 9999). However, we decided to make our operands 4 digits long and **put the 3rd operand**, if needed, in the **ACC**.
 
 ## 2. Symbolic Machine Language (AL):
 #### AL Specifications:
