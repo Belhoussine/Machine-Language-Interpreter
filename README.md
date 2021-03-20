@@ -41,8 +41,9 @@ The syntax of this ML is the following:
     - **1**  : operand1 is an **address** & operand2 is a **literal**.
     - **2**  : operand1 is a **literal** & operand2 is an **address**.
     - **3**  : operand1 is a **literal** & operand2 is a **literal**.
-    - **8**  : special "operands_type" value. Signifies that we should assign the value in **ACC** to **operand2**.
-    - **9**  : special "operands_type" value. Signifies that we should assign the value in **operand1** to **ACC**.
+    - **7**  : special "operands_type" value. Signifies that we should assign the value in **ACC** to **operand2** (address).
+    - **8**  : special "operands_type" value. Signifies that we should assign the value in **operand1** (address) to **ACC**.
+    - **9**  : special "operands_type" value. Signifies that we should assign the value in **operand1** (literal) to **ACC**.
     
 - Since we have a memory of **20,000** words we divided it into two parts:
     - ***Program section***: consists of **10,000** words (0 - 9999)
