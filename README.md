@@ -21,10 +21,9 @@ This is a machine language interpreter written in C, its purpose is to translate
 ## 1. Numeric Machine Language (ML) Design:
 ### Syntax:
 The syntax of this ML is the following:
-``` 
+` 
 +/- <OP> <OPD1> <OPD2> <OpType>
-	 1	   4      4		  1
-``` 
+`
 - The instruction: ***+1 2345 6789 0*** could be described as follows:
 
 | sign_bit  | operation |operand1  |operand2  | operands_type |
@@ -63,4 +62,4 @@ The syntax of this ML is the following:
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
 - [x] Parse and tokenize each line as an ***instruction*** structure.
 - [x] Load all ***instructions*** to RAM (***CODE_MEMORY***).
-- [ ] Execute the ***instructionS*** in RAM one by one.
+- [ ] Execute the ***instructions*** in RAM one by one.
