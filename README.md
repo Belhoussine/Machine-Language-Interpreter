@@ -14,3 +14,22 @@ This is a machine language interpreter written in C, its purpose is translating 
 - [x] Read, line by line, file containing Numeric Machine Language (ML)
 - [x] Parse and tokenize each line, then create instruction structure with given tokens
 - [ ] Execute the instruction
+
+## ML Design:
+Note: The user sets the accumulator before using an instruction that requires a third operand. Thus,  we can come up with the following instruction design:
+
+- The “+0 0001 1000 1” instruction could be described by the table below:
+
+| sign_bit  | opcode |operand_1 |operand_2 | operands_type |
+| --------- | -------| ---------|----------|---------------|
+| +         | 0      |     0001 |  1000    |    3          |
+
+- The operands_type digit can be = {0,1,2,3}
+    - 0 means: operand_1 is an address & operand_2 is an address
+    - 1 means: operand_1 is an address & operand_2 is a literal
+    - 2 means: operand_1 is a literal & operand_2 is an address
+    - 3 means: operand_1 is a literal & operand_2 is a literal
+- Since we have a memory of 20000 words we divided it into two parts:
+    - Data part: consists of 10000 words (0 - 9999)
+    - Program part: consists of 10000 words (0 - 9999)
+- With this design, we can access all the memory addresses since we have 4 digits in each operand.
