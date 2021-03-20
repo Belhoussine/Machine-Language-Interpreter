@@ -11,6 +11,6 @@ This is a machine language interpreter written in C, its purpose is translating 
     - Similar to assembly, will be translated to ML - should implement an easy/direct mapping.
 
 ## Interpreter:
-- [ ] Read, line by line, file containing Numeric Machine Language (ML)
-- [ ] Parse and tokenize each line, then create instruction structure with given tokens
+- [x] Read, line by line, file containing Numeric Machine Language (ML)
+- [x] Parse and tokenize each line, then create instruction structure with given tokens
 - [ ] Execute the instruction
