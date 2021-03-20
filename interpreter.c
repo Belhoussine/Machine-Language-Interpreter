@@ -124,6 +124,21 @@ void greaterOrEquals_lessThan_log(instruction inst)
         printf("Square root of %d stored in %d", inst.operand1, inst.operand2);
 }
 
+// Log info of read_print function
+void read_print_log(instruction inst)
+{
+    if(inst.sign_bit == 1)
+        printf("Reading %d", DATA_MEMORY[inst.operand2]);
+    else
+        printf("%d", inst.operand1);
+}
+
+// Log info of stop function
+void stop_log()
+{
+    printf("program is exiting...\n");
+}
+
 //=========================================================
 //==================END-LOG-FUNCTIONS===================
 
@@ -239,7 +254,7 @@ void equals_notEquals(instruction inst)
     ACC = literal_inst.operand1 == literal_inst.operand2;
 
     if (VERBOSE)
-        equals_notEquals_log(inst)
+        equals_notEquals_log(inst);
 }
 
 // Checks if <OPD1> >= <OPD2>
@@ -266,12 +281,16 @@ void read_print(instruction inst)
     {
         printf("%d", literal_inst.operand1);
     }
+    if(VERBOSE)
+        read_print_log(inst);
 }
 
-// stop
+// stop function
+//instruction is maybe not necessary as an input argument
 void stop(instruction inst)
 {
-    //instruction is maybe not necessary
+    if(VERBOSE)
+        stop_log();
     exit(0);
 }
 // Execute a single instruction in RAM
