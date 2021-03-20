@@ -89,7 +89,6 @@ The executable takes one or two command line arguments:
 ***Run executable:***
 -  *For Linux Based OS:*
 ```
-    For Linux Based OS:
     >> ./interpreter <source_ML_file_name>
     OR
     >> ./interpreter <source_ML_file_name> -v
