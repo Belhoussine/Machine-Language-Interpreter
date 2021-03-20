@@ -16,8 +16,6 @@ This is a machine language interpreter written in C, its purpose is to translate
 |     **\<DEST>**   |Destination address or literal, similar to **\<OPD2>**		|
 
 
-
-
 ## 1. Numeric Machine Language (ML) Design:
 ### Syntax:
 The syntax of this ML is the following:
@@ -36,7 +34,7 @@ The syntax of this ML is the following:
 - This language uses **2** registers: **IP** & **ACC**
 - This language allows to store both **literals** and **addresses** in an instruction (using ***operands_type*** digit).
 
-- The ***operands_type*** digit can be one of the following: **{ 0 , 1 , 2 , 3 , 8 , 9 }**
+- The ***operands_type*** digit can be one of the following: **{ 0 , 1 , 2 , 3 , 7 , 8 , 9 }**
     - **0**  : operand1 is an **address** & operand2 is an **address**.
     - **1**  : operand1 is an **address** & operand2 is a **literal**.
     - **2**  : operand1 is a **literal** & operand2 is an **address**.
@@ -53,6 +51,20 @@ The syntax of this ML is the following:
 
 **NOTE:** The user should set the accumulator before using an instruction that requires a third operand. 
 
+#### Full OpCode table:
+| OpCode | Description      | OpCode | Description    |
+|--------|------------------|--------|----------------|
+| +0     | assign           | -0     | (not used)     |
+| +1     | +                | -1     | -              |
+| +2     | x                | -2     | /              |
+| +3     | square           | -3     | square root    |
+| +4     | equals           | -4     | does not equal |
+| +5     | greater or equal | -5     | less than      |
+| +6     | z <- A[x]        | -6     | A[x] <- z      |
+| +7     | incr, test, jump | -7     | label          |
+| +8     | read             | -8     | print          |
+| +9     | stop             | -9     | (not used)     |
+
 ## 2. Symbolic Machine Language (AL):
 #### AL Specifications:
 - This language is similar to assembly.
@@ -62,5 +74,8 @@ The syntax of this ML is the following:
 ## Interpreter Implementation:
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
 - [x] Parse and tokenize each line as an ***instruction*** structure.
-- [x] Load all ***instructions*** to RAM (***CODE_MEMORY***).
-- [ ] Execute the ***instructions*** in RAM one by one.
+- [x] Load all ***instructions*** to RAM (***CODE_MEMORY***):
+    - TODO (explanation)
+- [ ] Execute the ***instructions*** in RAM one by one:
+    - TODO (explanation)
+- TODO (add command line input arguments)

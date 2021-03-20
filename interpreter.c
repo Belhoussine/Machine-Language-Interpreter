@@ -73,13 +73,13 @@ void read_source_file(FILE *infp)
 
 //=================START-LOG-FUNCTIONS==================
 //=========================================================
-// assign log
+// Log info od assign function
 void assign_log(instruction inst)
 {
     printf("Storing %d in %d \n", inst.operand1, inst.operand2);
 }
 
-// add_subtract_log
+// Log info of add_subtract function
 void add_subtract_log(instruction inst)
 {
     if (inst.sign_bit == 1)
@@ -87,8 +87,8 @@ void add_subtract_log(instruction inst)
     else
         printf("Subtracting %d from %d", inst.operand1, inst.operand2);
 }
-// multiply_divide_log
 
+// Log info of multiply_divide function
 void multiply_divide_log(instruction inst)
 {
     if (inst.sign_bit == 1)
@@ -97,66 +97,108 @@ void multiply_divide_log(instruction inst)
         printf("Dividing %d by %d", inst.operand1, inst.operand2);
 }
 
+// Log info of square_squareRoot function
+void square_squareRoot_log(instruction inst)
+{
+    if (inst.sign_bit == 1)
+        printf("Square of %d stored in %d", inst.operand1, inst.operand2);
+    else
+        printf("Square root of %d stored in %d", inst.operand1, inst.operand2);
+}
+
+// Log info of equals_notEquals function
+void equals_notEquals_log(instruction inst)
+{
+    if (inst.sign_bit == 1)
+        printf("Compare %d to %d", inst.operand1, inst.operand2);
+    else
+        printf("Compare %d to %d", inst.operand1, inst.operand2);
+}
+
+// Log info of square_squareRoot function
+void greaterOrEquals_lessThan_log(instruction inst)
+{
+    if (inst.sign_bit == 1)
+        printf("Square of %d stored in %d", inst.operand1, inst.operand2);
+    else
+        printf("Square root of %d stored in %d", inst.operand1, inst.operand2);
+}
+
 //=========================================================
 //==================END-LOG-FUNCTIONS===================
 
-//toLiteral
-
+// Transforms instruction's operands from addresses to corresponding literals
 instruction to_literal(instruction inst)
 {
     instruction literal_inst = inst;
+
+    // Both <OPD1> and <OPD2> are addresses
     if (inst.operands_type == 0)
     {
         literal_inst.operand1 = DATA_MEMORY[inst.operand1];
         literal_inst.operand2 = DATA_MEMORY[inst.operand2];
     }
+    // <OPD1> is an address, <OPD2> is a literal
     else if (inst.operands_type == 1)
     {
         literal_inst.operand1 = DATA_MEMORY[inst.operand1];
-        literal_inst.operand2 = inst.operand2;
     }
+    // <OPD1> is a literal, <OPD2> is an address
     else if (inst.operands_type == 2)
     {
         literal_inst.operand2 = DATA_MEMORY[inst.operand2];
-        literal_inst.operand1 = inst.operand1;
     }
 
     return literal_inst;
 }
 
-// assign
+// Assign to DATA_MEMORY or ACC
 void assign(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
+
+    // If special operands_type digit {7, 8, 9}
+    if (inst.operands_type == 7)
+    {
+        DATA_MEMORY[inst.operand2] = ACC;
+        return;
+    }
+    if (inst.operands_type == 8)
+    {
+        ACC = DATA_MEMORY[inst.operand1];
+        return;
+    }
     if (inst.operands_type == 9)
-        ACC = literal_inst.operand1;
-    //check operands_type and store in data memory
+    {
+        ACC = inst.operand1;
+        return;
+    }
+
+    // If normal assign operation, put <OPD1> in <OPD2> (address)
     DATA_MEMORY[inst.operand2] = literal_inst.operand1;
 
     if (VERBOSE)
-    {
         assign_log(inst);
-    }
 }
 
-// add_subtract
+// Add / substract <OPD1> and <OPD2> and put result in ACC
 void add_subtract(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
     {
-
         ACC = literal_inst.operand1 + literal_inst.operand2;
     }
     else
     {
         ACC = literal_inst.operand1 - literal_inst.operand2;
     }
+
     if (VERBOSE)
         add_subtract_log(inst);
 }
 
-// multiply_divide
+// Multiply / divide <OPD1> by <OPD2> and put result in ACC
 void multiply_divide(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
@@ -173,7 +215,7 @@ void multiply_divide(instruction inst)
         multiply_divide_log(inst);
 }
 
-// square_squareRoot
+// Compute square / square root of <OPD1> and put result in <OPD2>
 void square_squareRoot(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
@@ -185,38 +227,39 @@ void square_squareRoot(instruction inst)
     {
         DATA_MEMORY[inst.operand2] = sqrt(literal_inst.operand1);
     }
-    //add log fcn
+
+    if (VERBOSE)
+        square_squareRoot_log(inst);
 }
 
-// equals_notEquals
+// Checks if <OPD1> and <OPD2> are equal or different
 void equals_notEquals(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
-    if (literal_inst.operand1 == literal_inst.operand2)
-        ACC = 1;
-    else
-        ACC = 0;
-    // add log fcn
+    ACC = literal_inst.operand1 == literal_inst.operand2;
+
+    if (VERBOSE)
+        equals_notEquals_log(inst)
 }
 
-// greaterOrEquals_lessThan
+// Checks if <OPD1> >= <OPD2>
 void greaterOrEquals_lessThan(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
-    if (literal_inst.operand1 >= literal_inst.operand2)
-        ACC = 1;
-    else
-        ACC = 0;
-    // add log fcn
+    ACC = literal_inst.operand1 >= literal_inst.operand2;
+    if (VERBOSE)
+        greaterOrEquals_lessThan_log(inst);
 }
 
-// read_print
+// Scan user input and put it in <OPD2>
+// or prints from memory address <OPD1>
 void read_print(instruction inst)
 {
 
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
     {
+        printf(">> ");
         scanf("%d", &DATA_MEMORY[inst.operand2]);
     }
     else
