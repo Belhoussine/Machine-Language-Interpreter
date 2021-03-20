@@ -128,11 +128,11 @@ instruction to_literal(instruction inst)
 void assign(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
-    if (inst.sign_bit == 1)
-    {
-        //check operands_type and store in data memory
-        DATA_MEMORY[inst.operand2] = literal_inst.operand1;
-    }
+    if (inst.operands_type == 9)
+        ACC = literal_inst.operand1;
+    //check operands_type and store in data memory
+    DATA_MEMORY[inst.operand2] = literal_inst.operand1;
+
     if (VERBOSE)
     {
         assign_log(inst);
@@ -203,11 +203,33 @@ void equals_notEquals(instruction inst)
 void greaterOrEquals_lessThan(instruction inst)
 {
     instruction literal_inst = to_literal(inst);
-    if(literal_inst.operand1 >= literal_inst.operand2)
+    if (literal_inst.operand1 >= literal_inst.operand2)
         ACC = 1;
     else
         ACC = 0;
     // add log fcn
+}
+
+// read_print
+void read_print(instruction inst)
+{
+
+    instruction literal_inst = to_literal(inst);
+    if (inst.sign_bit == 1)
+    {
+        scanf("%d", &DATA_MEMORY[inst.operand2]);
+    }
+    else
+    {
+        printf("%d", literal_inst.operand1);
+    }
+}
+
+// stop
+void stop(instruction inst)
+{
+    //instruction is maybe not necessary
+    exit(0);
 }
 // Execute a single instruction in RAM
 void execute_instruction(instruction inst)
@@ -237,9 +259,11 @@ void execute_instruction(instruction inst)
     case 7:
         //loop_label(inst)
     case 8:
-        //read_print(inst)
+        read_print(inst);
+        break;
     case 9:
-        //stop(inst)
+        stop(inst);
+        break;
     }
 }
 // Execute instructions in RAM
