@@ -82,25 +82,34 @@ The executable takes one or two command line arguments:
 1. The ML source file to read instructions from.
 2. The options. *(i.e: -v for verbose)*
 
+***Compile source code:***
 ```
     >> gcc interpreter.c -lm -o interpreter
-
-    <pre> <b> For Linux Based OS: </b> </pre>
+```
+***Run executable:***
+-  *For Linux Based OS:*
+```
+    For Linux Based OS:
     >> ./interpreter <source_ML_file_name>
     OR
     >> ./interpreter <source_ML_file_name> -v
 
-    <pre> <b> For Windows OS: </b> </pre>
+    i.e:  ./interpreter source.nml -v
+```
+- *For Windows OS:*
+```
     >> interpreter <source_ML_file_name>
     OR
     >> interpreter <source_ML_file_name> -v
 
-    i.e:  ./interpreter source.nml -v
+    i.e:  interpreter source.nml -v
 ```
-#### Options:
+***Options:***
 ```
     -v : VERBOSE, logs all executed instructions sequentially.
 ```
+
+#### Implementation timeline:
 
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
 - [x] Decode and tokenize each line as an ***instruction*** structure.
