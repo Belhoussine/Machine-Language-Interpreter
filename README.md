@@ -50,8 +50,6 @@ The syntax of this ML is the following:
 - With this design, we can access all the memory addresses since we have **4 digits** in each operand.
 
 **NOTE:** The user should set the accumulator before using an instruction that requires a third operand.
-#### Challenges:
-- We found it a bit hard to design an instruction that gives us the possiblity to access all the memory cells (0 - 9999). However, we decided to make our operands 4 digits long and **put the 3rd operand**, if needed, in the **ACC**.
 
 #### Full OpCode table:
 | OpCode | Description      | OpCode | Description    |
@@ -67,13 +65,17 @@ The syntax of this ML is the following:
 | +8     | read             | -8     | print          |
 | +9     | stop             | -9     | (not used)     |
 
+#### Challenges:
+- We found it a bit hard to design an instruction that gives us the possiblity to access all the memory cells (0 - 9999). However, we decided to make our operands 4 digits long and **put the 3rd operand**, if needed, in the **ACC**.
+
+
 ## 2. Symbolic Machine Language (AL):
 #### AL Specifications:
 - This language is similar to assembly.
 - It implements an easy and direct mapping between its syntax and ML syntax.
 - This language will be translated into ML.
 
-## Interpreter Implementation:
+## 3. Interpreter:
 #### Usage:
 The executable interpreter should be compiled from the C source interpreter file "interpreter.c".  
 The executable takes one or two command line arguments:
@@ -83,9 +85,15 @@ The executable takes one or two command line arguments:
 ```
     >> gcc interpreter.c -lm -o interpreter
 
+    <pre> <b> For Linux Based OS: </b> </pre>
     >> ./interpreter <source_ML_file_name>
     OR
     >> ./interpreter <source_ML_file_name> -v
+
+    <pre> <b> For Windows OS: </b> </pre>
+    >> interpreter <source_ML_file_name>
+    OR
+    >> interpreter <source_ML_file_name> -v
 
     i.e:  ./interpreter source.nml -v
 ```
