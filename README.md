@@ -74,10 +74,36 @@ The syntax of this ML is the following:
 - This language will be translated into ML.
 
 ## Interpreter Implementation:
+#### Usage:
+The executable interpreter should be compiled from the C source interpreter file "interpreter.c".  
+The executable takes one or two command line arguments:
+1. The ML source file to read instructions from.
+2. The options. *(i.e: -v for verbose)*
+
+```
+    >> gcc interpreter.c -lm -o interpreter
+
+    >> ./interpreter <source_ML_file_name>
+    OR
+    >> ./interpreter <source_ML_file_name> -v
+
+    i.e:  ./interpreter source.nml -v
+```
+#### Options:
+```
+    -v : VERBOSE, logs all executed instructions sequentially.
+```
+
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
-- [x] Parse and tokenize each line as an ***instruction*** structure.
+- [x] Decode and tokenize each line as an ***instruction*** structure.
 - [x] Load all ***instructions*** to RAM (***CODE_MEMORY***):
-    - TODO (explanation)
+    - TODO: explanation
 - [ ] Execute the ***instructions*** in RAM one by one:
-    - TODO (explanation)
-- TODO (add command line input arguments)
+    - [x] Loop through ***CODE_MEMORY*** array.
+    - [x] Fetch each decoded instruction.
+    - [ ] Execute instruction:
+        - [ ] Implement a function for each opCode.
+        - [ ] Implement a log function for each function. 
+- [x] Add command line input arguments:
+    - [x] Input source ML file as a command line argument.
+    - [x] Input options as command line arguments (-v for verbose).

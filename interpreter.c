@@ -15,7 +15,7 @@ typedef struct
 
 instruction CODE_MEMORY[10000];
 int DATA_MEMORY[10000];
-unsigned short total_instructions = 0, IP = 0, VERBOSE = 1;
+unsigned short total_instructions = 0, IP = 0, VERBOSE = 0;
 int ACC;
 
 //=========================================================
@@ -58,15 +58,22 @@ void display(instruction inst)
 }
 
 // Read file and store instructions in RAM (code section)
-void read_source_file(FILE *infp)
+void read_source_file(char* file_name)
 {
     char line[50];
+    // Open source file (Machine Language)
+    FILE *infp = fopen(file_name, "r");
+    if (infp == NULL)
+    {
+        printf("File not found.");
+        exit(1);
+    }
 
     // Read line by line
     while (fgets(line, sizeof(line), infp) != NULL)
     {
         CODE_MEMORY[total_instructions] = tokenize(line);
-        display(CODE_MEMORY[total_instructions]);
+        // display(CODE_MEMORY[total_instructions]);
         total_instructions++;
     }
 }
@@ -76,67 +83,67 @@ void read_source_file(FILE *infp)
 // Log info od assign function
 void assign_log(instruction inst)
 {
-    printf("Storing %d in %d \n", inst.operand1, inst.operand2);
+    printf("> Storing %d in %d.\n", inst.operand1, inst.operand2);
 }
 
 // Log info of add_subtract function
 void add_subtract_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("Adding %d to %d", inst.operand1, inst.operand2);
+        printf("> Adding %d to %d.\n", inst.operand1, inst.operand2);
     else
-        printf("Subtracting %d from %d", inst.operand1, inst.operand2);
+        printf("> Subtracting %d from %d.\n", inst.operand1, inst.operand2);
 }
 
 // Log info of multiply_divide function
 void multiply_divide_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("Multiplying %d by %d", inst.operand1, inst.operand2);
+        printf("> Multiplying %d by %d. \n", inst.operand1, inst.operand2);
     else
-        printf("Dividing %d by %d", inst.operand1, inst.operand2);
+        printf("> Dividing %d by %d. \n", inst.operand1, inst.operand2);
 }
 
 // Log info of square_squareRoot function
 void square_squareRoot_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("Square of %d stored in %d", inst.operand1, inst.operand2);
+        printf("> Square of %d stored in %d. \n", inst.operand1, inst.operand2);
     else
-        printf("Square root of %d stored in %d", inst.operand1, inst.operand2);
+        printf("> Square root of %d stored in %d. \n", inst.operand1, inst.operand2);
 }
 
 // Log info of equals_notEquals function
 void equals_notEquals_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("Compare %d to %d", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d. \n", inst.operand1, inst.operand2);
     else
-        printf("Compare %d to %d", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d. \n", inst.operand1, inst.operand2);
 }
 
 // Log info of square_squareRoot function
 void greaterOrEquals_lessThan_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("Square of %d stored in %d", inst.operand1, inst.operand2);
+        printf("> Square of %d stored in %d.\n", inst.operand1, inst.operand2);
     else
-        printf("Square root of %d stored in %d", inst.operand1, inst.operand2);
+        printf("> Square root of %d stored in %d.\n", inst.operand1, inst.operand2);
 }
 
 // Log info of read_print function
 void read_print_log(instruction inst)
 {
     if(inst.sign_bit == 1)
-        printf("Reading %d", DATA_MEMORY[inst.operand2]);
+        printf("> Reading %d. \n", DATA_MEMORY[inst.operand2]);
     else
-        printf("%d", inst.operand1);
+        printf("> %d\n", inst.operand1);
 }
 
 // Log info of stop function
 void stop_log()
 {
-    printf("program is exiting...\n");
+    printf("> Program is exiting...\n");
 }
 
 //=========================================================
@@ -341,17 +348,20 @@ void execute_instructions()
 //=========================================================
 //======================END-FUNCTIONS======================
 
-int main()
+int main(int argc, char *argv[])
 {
-    // Open source file (Machine Language)
-    FILE *infp = fopen("source.nml", "r");
-    if (infp == NULL)
-    {
-        printf("File not found.");
+    // Getting command line arguments
+    if(argc < 2){
+        printf("Error: you must input a source file.\n");
+        printf("[Usage]:\n\t %s <source_file>\n", argv[0]);
+        printf("[Options]:\n\t -v : Verbose (log all executed instructions).\n");
         return 1;
+    }else if(argc == 3 && strcmp(argv[2], "-v") == 0){
+        printf("[INFO] Verbose ON.\n");
+        VERBOSE = 1;
     }
-
-    read_source_file(infp);
+    
+    read_source_file(argv[1]);
 
     execute_instructions();
 
