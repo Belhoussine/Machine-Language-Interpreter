@@ -17,7 +17,7 @@ This is a machine language interpreter written in C, its purpose is to translate
 
 
 ## 1. Numeric Machine Language (ML) Design:
-### Syntax:
+#### Syntax:
 The syntax of this ML is the following:
 ` 
 +/- <OP> <OPD1> <OPD2> <OpType>
@@ -27,7 +27,7 @@ The syntax of this ML is the following:
 - **OpCode**: combination of ***sign bit*** and ***operation***
 - **Operand 1**: **4** digits - ranges from **0000** to **9999** (10,000 values)
 - **Operand 2**: **4** digits - ranges from **0000** to **9999** (10,000 values)
-- **Operands type**: describes whether the operands are ***Literals*** or ***Addresses*** (described in detail in **ML Specifications**)
+- **Operands type**:**1** digits - describes whether the operands are ***Literals*** or ***Addresses*** (described in detail in **ML Specifications**)
 
 - The instruction: ***+1 2345 6789 0*** could be described as follows:
 
@@ -59,7 +59,9 @@ The syntax of this ML is the following:
     
 - With this design, we can access all the memory addresses since we have **4 digits** in each operand.
 
-**NOTE:** The user should set the accumulator before using an instruction that requires a third operand.
+**NOTE:** 
+- The user should set the accumulator before using an instruction that requires a third operand.
+- The result of all operations that use **two operands** store the result in the **ACC**
 
 #### Full OpCode table:
 | OpCode | Description      | OpCode | Description    |
@@ -78,14 +80,7 @@ The syntax of this ML is the following:
 #### Challenges:
 - We found it a bit hard to design an instruction that gives us the possiblity to access all the memory cells (0 - 9999). However, we decided to make our operands 4 digits long and **put the 3rd operand**, if needed, in the **ACC**.
 
-
-## 2. Symbolic Machine Language (AL):
-#### AL Specifications:
-- This language is similar to assembly.
-- It implements an easy and direct mapping between its syntax and ML syntax.
-- This language will be translated into ML.
-
-## 3. Interpreter:
+## 2. Interpreter:
 #### Usage:
 The executable interpreter should be compiled from the C source interpreter file "interpreter.c".  
 The executable takes one or two command line arguments:
@@ -133,3 +128,53 @@ The executable takes one or two command line arguments:
 - [x] Add command line input arguments:
     - [x] Input source ML file as a command line argument.
     - [x] Input options as command line arguments (-v for verbose).
+
+
+## 3. Symbolic Machine Language Design (AL):
+#### Syntax
+The syntax of this assembly language is the following:
+` 
+<OP> <type><OPD1> <type><OPD2>
+`
+- **Operation** could be one of the following: {"ASN",  "ASN", "ADD",  "SUB",  "MUL", "DIV", "SQR",
+                            "SQRT", "EQL", "NEQL", "GOE",  "LOE", "ATV", "VTA",
+                            "JMP",  "LBL", "READ", "PRNT", "STOP"}
+- **Type** describes the type of the next operand. "L" means the next operand is a literal. "A" means the next operand is an address.
+- **Operand1**: 4 digits - ranges from 0000 to 9999 (10000 values)
+- **Operand2**: 4 digits - ranges from 0000 to 9999 (10000 values)
+- The instruction: ASN L2341 A1001 could be described ass follows:
+
+| operation  | type     |operand1  |type      | operand2      |
+| ---------  | ---------| ---------|----------|---------------|
+| ASN        | L        |     2341 |  A       |    1001       |
+
+#### AL Specifications:
+- This language is similar to assembly.
+- It implements an easy and direct mapping between its syntax and ML syntax.
+- This language will be translated into ML.
+
+## 4.Assembler
+#### Usage:
+The executable interpreter takes the **sourcle.al** file as an input.
+***Compile source code:***
+```
+    >> gcc interpreter.c -lm -o interpreter
+```
+***Run executable:***
+-  *For Linux Based OS:*
+```
+    >> ./interpreter <source_ML_file_name>
+    OR
+    >> ./interpreter <source_ML_file_name> -v
+
+    i.e:  ./interpreter source.nml -v
+```
+- *For Windows OS:*
+```
+    >> interpreter <source_ML_file_name>
+    OR
+    >> interpreter <source_ML_file_name> -v
+
+    i.e:  interpreter source.nml -v
+```
+
