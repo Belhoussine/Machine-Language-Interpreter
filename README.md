@@ -59,9 +59,13 @@ The syntax of this ML is the following:
     
 - With this design, we can access all the memory addresses since we have **4 digits** in each operand.
 
-**NOTE:** 
+**NOTES:** 
 - The user should set the accumulator before using an instruction that requires a third operand.
-- The result of all operations that use **two operands** store the result in the **ACC**
+- The result of all operations that use **two operands** store the result in the **ACC**.
+- In order to store a value in an array, the user should:
+    - Compute the destination address (**Base address** + **index**)
+    - Store that address from **ACC** to a memory address
+    - Use the corresponding function (**ATV** or **VTA** / **+6** or **-6**) to store a variable in that address, or store the content of that address in a variable.
 
 #### Full OpCode table:
 | OpCode | Description      | OpCode | Description    |
@@ -113,7 +117,7 @@ The executable takes one or two command line arguments:
     -v : VERBOSE, logs all executed instructions sequentially.
 ```
 
-#### Implementation timeline:
+#### Interpreter implementation timeline:
 
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
 - [x] Decode and tokenize each line as an ***instruction*** structure.
@@ -155,26 +159,25 @@ The syntax of this assembly language is the following:
 
 ## 4.Assembler
 #### Usage:
-The executable interpreter takes the **sourcle.al** file as an input.
+The assembler executable outputs a file named ***source.nml*** that contains the corresponding ML code to be interpreted.
+
 ***Compile source code:***
 ```
-    >> gcc interpreter.c -lm -o interpreter
+    >> gcc assembler.c -o assembler
 ```
 ***Run executable:***
 -  *For Linux Based OS:*
 ```
-    >> ./interpreter <source_ML_file_name>
-    OR
-    >> ./interpreter <source_ML_file_name> -v
+    >> ./assembler <source_AL_file_name>
 
-    i.e:  ./interpreter source.nml -v
+    i.e:  ./assembler source.al
 ```
 - *For Windows OS:*
 ```
-    >> interpreter <source_ML_file_name>
-    OR
-    >> interpreter <source_ML_file_name> -v
+    >> interpreter <source_AL_file_name>
 
-    i.e:  interpreter source.nml -v
+    i.e:  interpreter source.al
 ```
 
+#### Assembler implementation timeline:
+- TODO

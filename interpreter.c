@@ -5,7 +5,7 @@
 
 typedef struct {
     char sign_bit;
-    unsigned short operation, operand1, operand2;
+    short operation, operand1, operand2;
     char operands_type;
 } instruction;
 
@@ -103,26 +103,29 @@ void assign_log(instruction inst) {
     } else if (inst.operands_type == 8 || inst.operands_type == 9) {
         printf("> [ASN] Storing %d in ACC.\n", inst.operand1);
     } else {
-        printf("> [ASN] Storing %d in address %d.\n", inst.operand1, inst.operand2);
+        printf("> [ASN] Storing %d in address %d.\n", inst.operand1,
+               inst.operand2);
     }
 }
 
 // Log info of add_subtract function
 void add_subtract_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> [ADD] Adding %d to %d.\n", inst.operand1, inst.operand2);
+        printf("> [ADD] Adding %d to %d, storing result in ACC.\n",
+               inst.operand1, inst.operand2);
     else
-        printf("> [SUB] Subtracting %d from %d.\n", inst.operand1,
-               inst.operand2);
+        printf("> [SUB] Subtracting %d from %d, storing result in ACC.\n",
+               inst.operand1, inst.operand2);
 }
 
 // Log info of multiply_divide function
 void multiply_divide_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> [MULT] Multiplying %d by %d. \n", inst.operand1,
-               inst.operand2);
+        printf("> [MUL] Multiplying %d by %d, storing result in ACC.\n",
+               inst.operand1, inst.operand2);
     else
-        printf("> [DIV] Dividing %d by %d. \n", inst.operand1, inst.operand2);
+        printf("> [DIV] Dividing %d by %d, storing result in ACC.\n",
+               inst.operand1, inst.operand2);
 }
 
 // Log info of square_squareRoot function
@@ -136,17 +139,30 @@ void square_squareRoot_log(instruction inst) {
 // Log info of equals_notEquals function
 void equals_notEquals_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Compare %d to %d. \n", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d. storing result in ACC.\n", inst.operand1,
+               inst.operand2);
     else
-        printf("> Compare %d to %d. \n", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+               inst.operand2);
 }
 
 // Log info of square_squareRoot function
 void greaterOrEquals_lessThan_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Compare %d to %d.\n", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+               inst.operand2);
     else
-        printf("> Compare %d to %d.\n", inst.operand1, inst.operand2);
+        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+               inst.operand2);
+}
+
+void arrToVar_varToArr_log(instruction inst){
+    if (inst.sign_bit == 1)
+        printf("> Storing address %d (array cell) in %d (variable)\n", inst.operand1,
+               inst.operand2);
+    else
+        printf("> Storing address %d (variable) in %d (array cell)\n", inst.operand1,
+               inst.operand2);
 }
 
 // Log info of stop function
@@ -199,8 +215,7 @@ void multiply_divide(instruction inst) {
 void square_squareRoot(instruction inst) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1) {
-        DATA_MEMORY[inst.operand2] =
-            literal_inst.operand1 * literal_inst.operand1;
+        DATA_MEMORY[inst.operand2] = literal_inst.operand1 * literal_inst.operand1;
     } else {
         DATA_MEMORY[inst.operand2] = sqrt(literal_inst.operand1);
     }
@@ -221,6 +236,18 @@ void greaterOrEquals_lessThan(instruction inst) {
     if (VERBOSE) greaterOrEquals_lessThan_log(inst);
 }
 
+// Assign variable <OPD1> to array cell address <OPD2> and vice versa
+void arrToVar_varToArr(instruction inst){
+    instruction literal_inst = to_literal(inst);
+    if (inst.sign_bit == 1) {
+        DATA_MEMORY[inst.operand2] = DATA_MEMORY[inst.operand1];
+    } else {
+        DATA_MEMORY[inst.operand2] = literal_inst.operand1;
+    }
+
+    if (VERBOSE) arrToVar_varToArr_log(inst);
+}
+
 // Scan user input and put it in <OPD2>
 // or prints from memory address <OPD1>
 void read_print(instruction inst) {
@@ -237,8 +264,9 @@ void read_print(instruction inst) {
     }
 }
 
-// stop function
-// instruction is maybe not necessary as an input argument
+
+
+// Stop Program
 void stop(instruction inst) {
     if (VERBOSE) stop_log();
     exit(0);
@@ -265,9 +293,11 @@ void execute_instruction(instruction inst) {
             greaterOrEquals_lessThan(to_literal(inst));
             break;
         case 6:
-            // arrToVar_vatToArr(inst)
+            arrToVar_varToArr(inst);
+            break;
         case 7:
-            // loop_label(inst)
+            // loop_label(inst);
+            break;
         case 8:
             read_print(inst);
             break;
