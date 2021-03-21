@@ -103,7 +103,7 @@ void assign_log(instruction inst) {
     } else if (inst.operands_type == 8 || inst.operands_type == 9) {
         printf("> [ASN] Storing %d in ACC.\n", inst.operand1);
     } else {
-        printf("> [ASN] Storing %d in %d.\n", inst.operand1, inst.operand2);
+        printf("> [ASN] Storing %d in address %d.\n", inst.operand1, inst.operand2);
     }
 }
 

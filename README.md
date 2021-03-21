@@ -22,6 +22,13 @@ The syntax of this ML is the following:
 ` 
 +/- <OP> <OPD1> <OPD2> <OpType>
 `
+- **Sign bit**: + or -
+- **Operation**: **1** digit  - from **0** to **9**
+- **OpCode**: combination of ***sign bit*** and ***operation***
+- **Operand 1**: **4** digits - ranges from **0000** to **9999** (10,000 values)
+- **Operand 2**: **4** digits - ranges from **0000** to **9999** (10,000 values)
+- **Operands type**: describes whether the operands are ***Literals*** or ***Addresses*** (described in detail in **ML Specifications**)
+
 - The instruction: ***+1 2345 6789 0*** could be described as follows:
 
 | sign_bit  | operation |operand1  |operand2  | operands_type |
