@@ -35,10 +35,13 @@ The syntax of this ML is the following:
 - This language allows to store both **literals** and **addresses** in an instruction (using ***operands_type*** digit).
 
 - The ***operands_type*** digit can be one of the following: **{ 0 , 1 , 2 , 3 , 7 , 8 , 9 }**
-    - **0**  : operand1 is an **address** & operand2 is an **address**.
-    - **1**  : operand1 is an **address** & operand2 is a **literal**.
-    - **2**  : operand1 is a **literal** & operand2 is an **address**.
-    - **3**  : operand1 is a **literal** & operand2 is a **literal**.
+    | operands_type | operand1 |operand2  |
+    | ------------  | ---------| ---------|
+    | **0**         | Address  |  Address |
+    | **1**         | Address  |  Literal |
+    | **2**         | Literal  |  Address |
+    | **3**         | Literal  |  Literal |
+    
     - **7**  : special "operands_type" value. Signifies that we should assign the value in **ACC** to **operand2** (address).
     - **8**  : special "operands_type" value. Signifies that we should assign the value in **operand1** (address) to **ACC**.
     - **9**  : special "operands_type" value. Signifies that we should assign the value in **operand1** (literal) to **ACC**.

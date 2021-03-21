@@ -16,7 +16,7 @@ typedef struct
 instruction CODE_MEMORY[10000];
 int DATA_MEMORY[10000];
 unsigned short total_instructions = 0, IP = 0, VERBOSE = 0;
-int ACC;
+int ACC = -1;
 
 //=========================================================
 //==================END-GLOBAL-VARIABLES===================
@@ -58,7 +58,7 @@ void display(instruction inst)
 }
 
 // Read file and store instructions in RAM (code section)
-void read_source_file(char* file_name)
+void read_source_file(char *file_name)
 {
     char line[50];
     // Open source file (Machine Language)
@@ -83,25 +83,25 @@ void read_source_file(char* file_name)
 // Log info od assign function
 void assign_log(instruction inst)
 {
-    printf("> Storing %d in %d.\n", inst.operand1, inst.operand2);
+    printf("> [ASSN] Storing %d in %d.\n", inst.operand1, inst.operand2);
 }
 
 // Log info of add_subtract function
 void add_subtract_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("> Adding %d to %d.\n", inst.operand1, inst.operand2);
+        printf("> [ADD] Adding %d to %d.\n", inst.operand1, inst.operand2);
     else
-        printf("> Subtracting %d from %d.\n", inst.operand1, inst.operand2);
+        printf("> [SUB] Subtracting %d from %d.\n", inst.operand1, inst.operand2);
 }
 
 // Log info of multiply_divide function
 void multiply_divide_log(instruction inst)
 {
     if (inst.sign_bit == 1)
-        printf("> Multiplying %d by %d. \n", inst.operand1, inst.operand2);
+        printf("> [MULT] Multiplying %d by %d. \n", inst.operand1, inst.operand2);
     else
-        printf("> Dividing %d by %d. \n", inst.operand1, inst.operand2);
+        printf("> [DIV] Dividing %d by %d. \n", inst.operand1, inst.operand2);
 }
 
 // Log info of square_squareRoot function
@@ -134,7 +134,7 @@ void greaterOrEquals_lessThan_log(instruction inst)
 // Log info of read_print function
 void read_print_log(instruction inst)
 {
-    if(inst.sign_bit == 1)
+    if (inst.sign_bit == 1)
         printf("> Reading %d. \n", DATA_MEMORY[inst.operand2]);
     else
         printf("> %d\n", inst.operand1);
@@ -159,6 +159,7 @@ instruction to_literal(instruction inst)
     {
         literal_inst.operand1 = DATA_MEMORY[inst.operand1];
         literal_inst.operand2 = DATA_MEMORY[inst.operand2];
+
     }
     // <OPD1> is an address, <OPD2> is a literal
     else if (inst.operands_type == 1)
@@ -206,14 +207,13 @@ void assign(instruction inst)
 // Add / substract <OPD1> and <OPD2> and put result in ACC
 void add_subtract(instruction inst)
 {
-    instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
     {
-        ACC = literal_inst.operand1 + literal_inst.operand2;
+        ACC = inst.operand1 + inst.operand2;
     }
     else
     {
-        ACC = literal_inst.operand1 - literal_inst.operand2;
+        ACC = inst.operand1 - inst.operand2;
     }
 
     if (VERBOSE)
@@ -223,14 +223,13 @@ void add_subtract(instruction inst)
 // Multiply / divide <OPD1> by <OPD2> and put result in ACC
 void multiply_divide(instruction inst)
 {
-    instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
     {
-        ACC = literal_inst.operand1 * literal_inst.operand2;
+        ACC = inst.operand1 * inst.operand2;
     }
     else
     {
-        ACC = literal_inst.operand1 / literal_inst.operand2;
+        ACC = inst.operand1 / inst.operand2;
     }
 
     if (VERBOSE)
@@ -257,8 +256,7 @@ void square_squareRoot(instruction inst)
 // Checks if <OPD1> and <OPD2> are equal or different
 void equals_notEquals(instruction inst)
 {
-    instruction literal_inst = to_literal(inst);
-    ACC = literal_inst.operand1 == literal_inst.operand2;
+    ACC = inst.operand1 == inst.operand2;
 
     if (VERBOSE)
         equals_notEquals_log(inst);
@@ -267,8 +265,7 @@ void equals_notEquals(instruction inst)
 // Checks if <OPD1> >= <OPD2>
 void greaterOrEquals_lessThan(instruction inst)
 {
-    instruction literal_inst = to_literal(inst);
-    ACC = literal_inst.operand1 >= literal_inst.operand2;
+    ACC = inst.operand1 >= inst.operand2;
     if (VERBOSE)
         greaterOrEquals_lessThan_log(inst);
 }
@@ -279,24 +276,25 @@ void read_print(instruction inst)
 {
 
     instruction literal_inst = to_literal(inst);
+    // Read
     if (inst.sign_bit == 1)
     {
         printf(">> ");
         scanf("%d", &DATA_MEMORY[inst.operand2]);
     }
+    // Print
     else
     {
-        printf("%d", literal_inst.operand1);
+        printf("> %d\n", literal_inst.operand1);
     }
-    if(VERBOSE)
-        read_print_log(inst);
+
 }
 
 // stop function
 //instruction is maybe not necessary as an input argument
 void stop(instruction inst)
 {
-    if(VERBOSE)
+    if (VERBOSE)
         stop_log();
     exit(0);
 }
@@ -345,25 +343,36 @@ void execute_instructions()
     }
 }
 
+void debug(){
+    printf("==============DEBUG=============\n");
+    printf(">>> %d %d\n", DATA_MEMORY[2345],DATA_MEMORY[2346]);
+    printf(">>> %d\n", ACC);
+}
+
 //=========================================================
 //======================END-FUNCTIONS======================
 
 int main(int argc, char *argv[])
 {
     // Getting command line arguments
-    if(argc < 2){
+    if (argc < 2)
+    {
         printf("Error: you must input a source file.\n");
         printf("[Usage]:\n\t %s <source_file>\n", argv[0]);
         printf("[Options]:\n\t -v : Verbose (log all executed instructions).\n");
         return 1;
-    }else if(argc == 3 && strcmp(argv[2], "-v") == 0){
+    }
+    else if (argc == 3 && strcmp(argv[2], "-v") == 0)
+    {
         printf("[INFO] Verbose ON.\n");
         VERBOSE = 1;
     }
-    
+
     read_source_file(argv[1]);
 
     execute_instructions();
+
+    // debug();
 
     return 0;
 }
