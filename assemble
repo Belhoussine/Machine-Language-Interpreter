@@ -1,1 +1,0 @@
-gcc assembler.c -o assembler && ./assembler && rm ./assembler
