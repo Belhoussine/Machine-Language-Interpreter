@@ -1,1 +1,0 @@
-gcc interpreter.c -lm -o interpreter && ./interpreter source.nml -v && rm ./interpreter
