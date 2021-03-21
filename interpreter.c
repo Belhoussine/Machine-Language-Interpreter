@@ -156,13 +156,21 @@ void greaterOrEquals_lessThan_log(instruction inst) {
                inst.operand2);
 }
 
-void arrToVar_varToArr_log(instruction inst){
+void arrToVar_varToArr_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Storing address %d (array cell) in %d (variable)\n", inst.operand1,
-               inst.operand2);
+        printf("> Storing address %d (array cell) in %d (variable)\n",
+               inst.operand1, inst.operand2);
     else
-        printf("> Storing address %d (variable) in %d (array cell)\n", inst.operand1,
-               inst.operand2);
+        printf("> Storing address %d (variable) in %d (array cell)\n",
+               inst.operand1, inst.operand2);
+}
+
+void jump_label_log(instruction inst) {
+    instruction literal_inst = to_literal(inst);
+    if (inst.sign_bit == 1)
+        printf("> Jumping to labeled IP %d.\n", literal_inst.operand1);
+    else
+        printf("> Labeling current IP in address %d\n", inst.operand2);
 }
 
 // Log info of stop function
@@ -182,7 +190,8 @@ void assign(instruction inst) {
         ACC = DATA_MEMORY[inst.operand1];
     } else if (inst.operands_type == 9) {
         ACC = inst.operand1;
-    } else {  // If normal assign operation, put <OPD1> in <OPD2> (address)
+    } else {
+        // If normal assign operation, put <OPD1> in <OPD2> (address)
         DATA_MEMORY[inst.operand2] = literal_inst.operand1;
     }
 
@@ -215,7 +224,8 @@ void multiply_divide(instruction inst) {
 void square_squareRoot(instruction inst) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1) {
-        DATA_MEMORY[inst.operand2] = literal_inst.operand1 * literal_inst.operand1;
+        DATA_MEMORY[inst.operand2] =
+            literal_inst.operand1 * literal_inst.operand1;
     } else {
         DATA_MEMORY[inst.operand2] = sqrt(literal_inst.operand1);
     }
@@ -237,15 +247,33 @@ void greaterOrEquals_lessThan(instruction inst) {
 }
 
 // Assign variable <OPD1> to array cell address <OPD2> and vice versa
-void arrToVar_varToArr(instruction inst){
+void arrToVar_varToArr(instruction inst) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1) {
+        // Storing array cell value (computer address: base_val + index)in
+        // variable (address)
         DATA_MEMORY[inst.operand2] = DATA_MEMORY[inst.operand1];
     } else {
+        // Storing variable (address or literal) in a variable (address)
         DATA_MEMORY[inst.operand2] = literal_inst.operand1;
     }
 
     if (VERBOSE) arrToVar_varToArr_log(inst);
+}
+
+// Assign variable <OPD1> to array cell address <OPD2> and vice versa
+void jump_label(instruction inst) {
+    instruction literal_inst = to_literal(inst);
+    if (inst.sign_bit == 1) {
+        // Jumping to a specific IP address in CODE_MEMORY
+        IP = literal_inst.operand1;
+    } else {
+        // Storing next instruction pointer (IP) in a specific data memory cell
+        // (address)
+        DATA_MEMORY[inst.operand2] = IP + 1;
+    }
+
+    if (VERBOSE) jump_label_log(inst);
 }
 
 // Scan user input and put it in <OPD2>
@@ -263,8 +291,6 @@ void read_print(instruction inst) {
                literal_inst.operand1);
     }
 }
-
-
 
 // Stop Program
 void stop(instruction inst) {
@@ -296,7 +322,7 @@ void execute_instruction(instruction inst) {
             arrToVar_varToArr(inst);
             break;
         case 7:
-            // loop_label(inst);
+            jump_label(inst);
             break;
         case 8:
             read_print(inst);
@@ -326,8 +352,8 @@ void debug() {
 int main(int argc, char *argv[]) {
     // Getting command line arguments
     if (argc < 2) {
-        printf("Error: you must input a source file.\n");
-        printf("[Usage]:\n\t %s <source_file>\n", argv[0]);
+        printf("Error: you must input a source ML file.\n");
+        printf("[Usage]:\n\t %s <source_ML_file>\n", argv[0]);
         printf(
             "[Options]:\n\t -v : Verbose (log all executed instructions).\n");
         return 1;

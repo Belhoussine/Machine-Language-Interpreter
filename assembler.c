@@ -12,7 +12,7 @@ typedef struct {
 instruction ASSEMBLY_CODE[10000];
 unsigned short total_instructions = 0;
 char instructions[20][5] = {"ASN",  "ASN", "ADD",  "SUB",  "MUL", "DIV", "SQR",
-                            "SQRT", "EQL", "NEQL", "GOE",  "LOE", "ATV", "VTA",
+                            "SQRT", "EQL", "NEQL", "GOE",  "LT", "ATV", "VTA",
                             "JMP",  "LBL", "READ", "PRNT", "STOP"};
 
 //=========================================================
@@ -145,8 +145,15 @@ void translate_instructions(char *file_name) {
 //=========================================================
 //======================END-FUNCTIONS======================
 
-int main() {
-    read_source_file("source.al");
+int main(int argc, char *argv[]) {
+    // Getting command line arguments
+    if (argc != 2) {
+        printf("Error: you must input a source AL file.\n");
+        printf("[Usage]:\n\t %s <source_AL_file>\n", argv[0]);
+        return 1;
+    }
+
+    read_source_file(argv[1]);
 
     translate_instructions("source.nml");
     return 0;

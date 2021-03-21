@@ -77,7 +77,7 @@ The syntax of this ML is the following:
 | +4     | equals           | -4     | does not equal |
 | +5     | greater or equal | -5     | less than      |
 | +6     | z <- A[x]        | -6     | A[x] <- z      |
-| +7     | incr, test, jump | -7     | label          |
+| +7     |       test, jump | -7     | label          |
 | +8     | read             | -8     | print          |
 | +9     | stop             | -9     | (not used)     |
 
@@ -141,7 +141,7 @@ The syntax of this assembly language is the following:
 <OP> <type><OPD1> <type><OPD2>
 `
 - **Operation** could be one of the following: {"ASN",  "ASN", "ADD",  "SUB",  "MUL", "DIV", "SQR",
-                            "SQRT", "EQL", "NEQL", "GOE",  "LOE", "ATV", "VTA",
+                            "SQRT", "EQL", "NEQL", "GOE",  "LT", "ATV", "VTA",
                             "JMP",  "LBL", "READ", "PRNT", "STOP"}
 - **Type** describes the type of the next operand. "L" means the next operand is a literal. "A" means the next operand is an address.
 - **Operand1**: 4 digits - ranges from 0000 to 9999 (10000 values)
@@ -156,6 +156,20 @@ The syntax of this assembly language is the following:
 - This language is similar to assembly.
 - It implements an easy and direct mapping between its syntax and ML syntax.
 - This language will be translated into ML.
+
+#### Full Operations table:
+| OpCode | OpCode | Description      | OpCode | OpCode | Description    |
+| ------ |--------|------------------| ------ |--------|----------------|
+| ASN    | +0     | assign           |        | -0     | (not used)     |
+| ADD    | +1     | +                | SUB    | -1     | -              |
+| MUL    | +2     | x                | DIV    | -2     | /              |
+| SQR    | +3     | square           | SQRT   | -3     | square root    |
+| EQL    | +4     | equals           | NEQL   | -4     | does not equal |
+| GOE    | +5     | greater or equal | LT     | -5     | less than      |
+| ATV    | +6     | z <- A[x]        | VTA    | -6     | A[x] <- z      |
+| JMP    | +7     | test, jump       | LBL    | -7     | label          |
+| READ   | +8     | read             | PRNT   | -8     | print          |
+| STOP   | +9     | stop             |        | -9     | (not used)     |
 
 ## 4.Assembler
 #### Usage:
