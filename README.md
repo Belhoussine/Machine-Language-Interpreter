@@ -192,6 +192,9 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 
     i.e:  interpreter source.al
 ```
-
+**NOTES:** 
+- The **#** character describes the start of a comment in assembly. The assembler will ignore lines that start with **#**
 #### Assembler implementation timeline:
-- TODO
+- [x] Add a simple complexity algorithm for testing
+- [x] Add a medium complexity algorithm for testing
+- [ ] Add a high complexity algorithm for testing
