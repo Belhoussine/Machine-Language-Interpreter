@@ -240,3 +240,10 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 - [x] Add a simple complexity algorithm for testing
 - [x] Add a medium complexity algorithm for testing
 - [ ] Add a high complexity algorithm for testing
+
+## Screenshots
+
+#### High complexity problem:
+
+![Screenshot from 2021-03-22 03-27-17](https://user-images.githubusercontent.com/46247214/111935501-82a06800-8abb-11eb-9410-62898f2f6202.png)
+
