@@ -73,7 +73,10 @@ instruction parse(char *line) {
     sscanf(line, "%s %s %s", inst.operation, op1, op2);
 
     memcpy(inst.operand1, op1 + 1, 4);
+    inst.operand1[4] = '\0';
     memcpy(inst.operand2, op2 + 1, 4);
+    inst.operand2[4] = '\0';
+
 
     inst.operand1_type = op1[0];
     inst.operand2_type = op2[0];
