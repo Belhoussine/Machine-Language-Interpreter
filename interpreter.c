@@ -15,7 +15,7 @@
 
 typedef struct {
     char sign_bit;
-    short operation, operand1, operand2;
+    int operation, operand1, operand2;
     char operands_type;
 } instruction;
 
@@ -174,15 +174,16 @@ void arrToVar_varToArr_log(instruction inst) {
         printf("[ATV] Storing address %d (array cell) in %d (variable)\n",
                inst.operand1, inst.operand2);
     else
-        printf("[VTA] Storing address %d (variable) in %d (array cell)\n",
+        printf("[VTA] Storing %d (variable) in %d (array cell)\n",
                inst.operand1, inst.operand2);
 }
 
 void jump_label_log(instruction inst, int flag) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
-        if(flag)
-            printf("[JMP] Jumping to labeled IP %d.\n", literal_inst.operand1);
+        if (flag)
+            printf("[JMP] Jumping to labeled IP %d.\n",
+                   literal_inst.operand1 + 2);
         else
             printf("[JMP] Not jumping.\n");
 
@@ -326,7 +327,7 @@ void read_print(instruction inst) {
             if (VERBOSE) {
                 sprintf(str, "%d", literal_inst.operand1);
                 strncat(STDOUT, str, sizeof(str));
-                printf("[PRNT]\n");
+                printf("[PRNT] %d\n", literal_inst.operand1);
             } else
                 printf("%d", literal_inst.operand1);
         }
@@ -334,8 +335,12 @@ void read_print(instruction inst) {
 }
 
 // Stop Program
-void stop(instruction inst) {
-    if (VERBOSE) stop_log();
+void stop() {
+    if (VERBOSE) {
+        stop_log();
+        printf(BOLD GRN "\n=============PROGRAM-OUTPUT===========\n" RESET);
+        printf("%s", STDOUT);
+    }
     exit(0);
 }
 // Execute a single instruction in RAM
@@ -372,7 +377,7 @@ void execute_instruction(instruction inst) {
             read_print(inst);
             break;
         case 9:
-            stop(inst);
+            stop();
             break;
     }
 }

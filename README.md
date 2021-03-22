@@ -96,7 +96,7 @@ The executable takes one or two command line arguments:
     >> gcc interpreter.c -lm -o interpreter
 ```
 ***Run executable:***
--  *For Linux Based OS:*
+-  *For Linux/Unix Based OS:*
 ```
     >> ./interpreter <source_ML_file_name>
     OR
@@ -118,24 +118,24 @@ The executable takes one or two command line arguments:
 ```
 
 #### Explanation of ML operations:
-- **+0**: Assign operand1 to operand2
-- **+1**: Add operand1 to operand2 and  store result in **ACC**
-- **-1**: Subtract operand1 from operand2 and store result in **ACC**
-- **+2**: Multiply operand1 by operand2 and store result in **ACC**
-- **-2**: Divide operand1 by operand2 and store result in **ACC**
-- **+3**: Square of operand1 and store result in **operand2**
-- **-3**: Square root of operand1 and store result in **operand2**
-- **+4**: If operand1 equals operand2, put 1 in **ACC**
-- **-4**: If operand1 does not equal operand2, put 0 in **ACC**
-- **+5**: If operand1 is greater or equals to operand2 then put 1 in **ACC**
-- **-5**: If operand1 is less than operand2 then put 0 in **ACC**
-- **+6**: Operands is an address. We access the value inside of it and then put in the address of operand2.
-- **-6**: Operand1 is assigned to the address that is pointed by the address of operand2.
-- **+7**: Jump to the address in operand1 if the adress is operand2 contains 1
-- **-7**: Store instruction in the address pointed by operand2
-- **+8**: Read input from user and put in the address pointed by operand2
-- **-8**: Print the content of the address pointed by operand1
-- **+9** Stops the program from executing
+- **+0**: Assign **operand1** to **operand2**
+- **+1**: Add **operand1** to **operand2** and  store result in **ACC**
+- **-1**: Subtract **operand1** from **operand2** and store result in **ACC**
+- **+2**: Multiply **operand1** by **operand2** and store result in **ACC**
+- **-2**: Divide **operand1** by **operand2** and store result in **ACC**
+- **+3**: Square of **operand1** and store result in **operand2**
+- **-3**: Square root of **operand1** and store result in **operand2**
+- **+4**: If **operand1** equals **operand2**, put 1 in **ACC**
+- **-4**: If **operand1** does not equal **operand2**, put 0 in **ACC**
+- **+5**: If **operand1** is greater or equals to **operand2** then put 1 in **ACC**
+- **-5**: If **operand1** is less than **operand2** then put 0 in **ACC**
+- **+6**: **Operand1** is an address. We access the value inside of it and then put in the address of **operand2**.
+- **-6**: **Operand1** is assigned to the address that is pointed at by the address of **operand2**.
+- **+7**: Jump to the address in operand1 if the adress is **operand2** contains 1
+- **-7**: Store instruction in the address pointed at by **operand2**.
+- **+8**: Read input from user and put in the address pointed at by **operand2**.
+- **-8**: Print the content of the address pointed at by **operand1**.
+- **+9**: Stops the program from executing.
 
 
 #### Interpreter implementation timeline:
@@ -144,12 +144,12 @@ The executable takes one or two command line arguments:
 - [x] Decode and tokenize each line as an ***instruction*** structure.
 - [x] Load all ***instructions*** to RAM (***CODE_MEMORY***):
     - TODO: explanation
-- [ ] Execute the ***instructions*** in RAM one by one:
+- [x] Execute the ***instructions*** in RAM one by one:
     - [x] Loop through ***CODE_MEMORY*** array.
     - [x] Fetch each decoded instruction.
-    - [ ] Execute instruction:
-        - [ ] Implement a function for each opCode.
-        - [ ] Implement a log function for each function. 
+    - [x] Execute instruction:
+        - [x] Implement a function for each opCode.
+        - [x] Implement a log function for each function. 
 - [x] Add command line input arguments:
     - [x] Input source ML file as a command line argument.
     - [x] Input options as command line arguments (-v for verbose).
@@ -201,7 +201,7 @@ The assembler executable outputs a file named ***source.nml*** that contains the
     >> gcc assembler.c -o assembler
 ```
 ***Run executable:***
--  *For Linux Based OS:*
+-  *For Linux/Unix Based OS:*
 ```
     >> ./assembler <source_AL_file_name>
 
@@ -214,36 +214,96 @@ The assembler executable outputs a file named ***source.nml*** that contains the
     i.e:  interpreter source.al
 ```
 #### Explanation of AL operations:
-- **ASN**: Assign operand1 to operand2
-- **ADD**: Add operand1 to operand2 and  store result in **ACC**
-- **SUB**: Subtract operand1 from operand2 and store result in **ACC**
-- **MUL**: Multiply operand1 by operand2 and store result in **ACC**
-- **DIV**: Divide operand1 by operand2 and store result in **ACC**
-- **SQR**: Square of operand1 and store result in **operand2**
-- **SQRT**: Square root of operand1 and store result in **operand2**
-- **EQL**: If operand1 equals operand2, put 1 in **ACC**
-- **NEQL**: If operand1 does not equal operand2, put 0 in **ACC**
-- **GOE**: If operand1 is greater or equals to operand2 then put 1 in **ACC**
-- **LT**: If operand1 is less than operand2 then put 0 in **ACC**
-- **ATV**: Operands is an address. We access the value inside of it and then put in the address of operand2.
-- **VTA**: Operand1 is assigned to the address that is pointed by the address of operand2.
-- **JMP**: Jump to the address in operand1 if the adress is operand2 contains 1
-- **LBL**: Store instruction in the address pointed by operand2
-- **READ**: Read input from user and put in the address pointed by operand2
-- **PRNT**: Print the content of the address pointed by operand1
-- **STOP** Stops the program from executing
+- **ASN**: Assign **operand1** to **operand2**
+- **ADD**: Add **operand1** to **operand2** and store result in **ACC**
+- **SUB**: Subtract **operand1** from **operand2** and store result in **ACC**
+- **MUL**: Multiply **operand1** by **operand2** and store result in **ACC**
+- **DIV**: Divide **operand1** by **operand2** and store result in **ACC**
+- **SQR**: Square of **operand1** and store result in **operand2**
+- **SQRT**: Square root of **operand1** and store result in **operand2**
+- **EQL**: If **operand1** equals **operand2**, put 1 in **ACC**
+- **NEQL**: If **operand1** does not equal **operand2**, put 0 in **ACC**.
+- **GOE**: If **operand1** is greater or equals to operand2 then put 1 in **ACC**.
+- **LT**: If **operand1** is less than **operand2** then put 0 in **ACC**.
+- **ATV**: **Operand1** is an address. We access the value inside of it and then put in the address of **operand2**.
+- **VTA**: **Operand1** is assigned to the address that is pointed at by the address of **operand2**.
+- **JMP**: Jump to the address in **operand1** if the adress is **operand2** contains 1.
+- **LBL**: Store instruction in the address pointed at by **operand2**.
+- **READ**: Read input from user and put in the address pointed at by **operand2**.
+- **PRNT**: Print the content of the address pointed at by **operand1**.
+- **STOP** Stops the program from executing.
 
 **NOTES:** 
 - The **#** character describes the start of a comment in assembly. The assembler will ignore lines that start with **#**
 - If the operand2 in print instruction is 9999 regardless of its type, it means it is \n.
 #### Assembler implementation timeline:
-- [x] Add a simple complexity algorithm for testing
-- [x] Add a medium complexity algorithm for testing
-- [ ] Add a high complexity algorithm for testing
+- [x] Add a simple complexity algorithm for testing:
+    - Perform assignments and arithmetic operations.
+    - Pseudo-code:
+    ```python
+        a = 10
+        b = 20
+        c = 4
+        s = a + b
+        sq = sqrt(c)
+        res = s / sq
+        print(res)
+        print('\n')
+    ```
+- [x] Add a medium complexity algorithm for testing:
+    - Find max in an array of 5 numbers (loop and if statement).
+    - Pseudo-code:
+    ```python
+        arr = [342, 96, 5935, 436, 1220]
+        maximum = 0
+        counter = 0
+        while(counter < 5):
+            current = arr[counter]
+            if(current > maximum):
+                maximum = current
+            counter = counter + 1
+        print(maximum)
+        print('\n')
+    ```
+- [x] Add a high complexity algorithm for testing:
+    - Draw a triangle shape (nested loops), then use nested if statements to print a value.
+    - Pseudo-code:
+    ```python
+        # Nested loops
+        i = 0
+        j = 0
+        n = 10
+        while (i < n):
+            j = i
+            while (j < n):
+                print(0)
+                j = j + 1
+            print('\n')
+            i = i+1
+
+        # Nested if statements
+        a = 15
+        b = 5
+        c = a + b
+        if (c >= 15):
+            d = c / 2
+            if(d >= 5):
+                print(1337)
+        print('\n')
+    ```
 
 ## Screenshots
 
-#### High complexity problem:
+### Simple problem:
 
-![Screenshot from 2021-03-22 03-27-17](https://user-images.githubusercontent.com/46247214/111935501-82a06800-8abb-11eb-9410-62898f2f6202.png)
+![simple](https://user-images.githubusercontent.com/54045588/112025849-e36c8680-8b35-11eb-91e7-d4e6d834c9c8.png)
+
+### Medium problem:
+
+![medium](https://user-images.githubusercontent.com/54045588/112025971-0a2abd00-8b36-11eb-8451-37e89cbb6be4.png)
+
+### Complex problem:
+
+![complex](https://user-images.githubusercontent.com/54045588/112026020-144cbb80-8b36-11eb-9d53-491260e3a85f.png)
+
 
