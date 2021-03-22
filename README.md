@@ -192,14 +192,14 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 
     i.e:  interpreter source.al
 ```
-#### Explanation of operations:
+#### Explanation of AL operations:
 - **ASN**: Assign operand1 to operand2
-- **ADD**: Add operand1 to operand2
-- **SUB**: Subtract operand1 from operand2
-- **MUL**: Multiply operand1 by operand2
-- **DIV**: Divide operand1 by operand2
-- **SQR**: Square of operand1
-- **SQRT**: Square root of operand1
+- **ADD**: Add operand1 to operand2 and  store result in **ACC**
+- **SUB**: Subtract operand1 from operand2 and store result in **ACC**
+- **MUL**: Multiply operand1 by operand2 and store result in **ACC**
+- **DIV**: Divide operand1 by operand2 and store result in **ACC**
+- **SQR**: Square of operand1 and store result in **operand2**
+- **SQRT**: Square root of operand1 and store result in **operand2**
 - **EQL**: If operand1 equals operand2, put 1 in **ACC**
 - **NEQL**: If operand1 does not equal operand2, put 0 in **ACC**
 - **GOE**: If operand1 is greater or equals to operand2 then put 1 in **ACC**
@@ -209,7 +209,7 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 - **JMP**: Jump to the address in operand1 if the adress is operand2 contains 1
 - **LBL**: Store instruction in the address pointed by operand2
 - **READ**: Read input from user and put in the address pointed by operand2
-- **PRINT**: Print the content of the address pointed by operand1
+- **PRNT**: Print the content of the address pointed by operand1
 - **STOP** Stops the program from executing
 
 **NOTES:** 
