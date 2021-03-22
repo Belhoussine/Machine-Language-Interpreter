@@ -102,6 +102,7 @@ void read_source_file(char *file_name) {
 
     // Read line by line
     while (fgets(line, sizeof(line), infp) != NULL) {
+        if(line[0] == '#' || strlen(line) == 0) continue;
         ASSEMBLY_CODE[total_instructions] = parse(line);
         // display(ASSEMBLY_CODE[total_instructions]);
         total_instructions++;

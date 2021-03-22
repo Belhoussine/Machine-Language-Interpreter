@@ -131,46 +131,48 @@ void multiply_divide_log(instruction inst) {
 // Log info of square_squareRoot function
 void square_squareRoot_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Square of %d stored in %d. \n", inst.operand1, inst.operand2);
+        printf("> [SQR] Square of %d stored in %d. \n", inst.operand1,
+               inst.operand2);
     else
-        printf("> Sqrt of %d stored in %d. \n", inst.operand1, inst.operand2);
+        printf("> [SQRT] Sqrt of %d stored in %d. \n", inst.operand1,
+               inst.operand2);
 }
 
 // Log info of equals_notEquals function
 void equals_notEquals_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Compare %d to %d. storing result in ACC.\n", inst.operand1,
+        printf("> [EQL] %d == %d. storing result in ACC.\n", inst.operand1,
                inst.operand2);
     else
-        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+        printf("> [NEQL] %d != %d, storing result in ACC.\n", inst.operand1,
                inst.operand2);
 }
 
 // Log info of square_squareRoot function
 void greaterOrEquals_lessThan_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+        printf("> [GOE] %d >= %d, storing result in ACC.\n", inst.operand1,
                inst.operand2);
     else
-        printf("> Compare %d to %d, storing result in ACC.\n", inst.operand1,
+        printf("> [LT] %d < %d, storing result in ACC.\n", inst.operand1,
                inst.operand2);
 }
 
 void arrToVar_varToArr_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("> Storing address %d (array cell) in %d (variable)\n",
+        printf("> [ATV] Storing address %d (array cell) in %d (variable)\n",
                inst.operand1, inst.operand2);
     else
-        printf("> Storing address %d (variable) in %d (array cell)\n",
+        printf("> [VTA] Storing address %d (variable) in %d (array cell)\n",
                inst.operand1, inst.operand2);
 }
 
 void jump_label_log(instruction inst) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1)
-        printf("> Jumping to labeled IP %d.\n", literal_inst.operand1);
+        printf("> [JMP] Jumping to labeled IP %d.\n", literal_inst.operand1);
     else
-        printf("> Labeling current IP in address %d\n", inst.operand2);
+        printf("> [LBL] Labeling current IP %d in address %d\n", IP, inst.operand2);
 }
 
 // Log info of stop function
@@ -235,14 +237,22 @@ void square_squareRoot(instruction inst) {
 
 // Checks if <OPD1> and <OPD2> are equal or different
 void equals_notEquals(instruction inst) {
-    ACC = inst.operand1 == inst.operand2;
+    if (inst.sign_bit == 1) {
+        ACC = inst.operand1 == inst.operand2;
+    } else {
+        ACC = inst.operand1 != inst.operand2;
+    }
 
     if (VERBOSE) equals_notEquals_log(inst);
 }
 
 // Checks if <OPD1> >= <OPD2>
 void greaterOrEquals_lessThan(instruction inst) {
-    ACC = inst.operand1 >= inst.operand2;
+    if (inst.sign_bit == 1) {
+        ACC = inst.operand1 >= inst.operand2;
+    } else {
+        ACC = inst.operand1 < inst.operand2;
+    }
     if (VERBOSE) greaterOrEquals_lessThan_log(inst);
 }
 
@@ -252,7 +262,7 @@ void arrToVar_varToArr(instruction inst) {
     if (inst.sign_bit == 1) {
         // Storing array cell value (computer address: base_val + index)in
         // variable (address)
-        DATA_MEMORY[inst.operand2] = DATA_MEMORY[inst.operand1];
+        DATA_MEMORY[inst.operand2] = DATA_MEMORY[DATA_MEMORY[inst.operand1]];
     } else {
         // Storing variable (address or literal) in a variable (address)
         DATA_MEMORY[inst.operand2] = literal_inst.operand1;
@@ -266,11 +276,11 @@ void jump_label(instruction inst) {
     instruction literal_inst = to_literal(inst);
     if (inst.sign_bit == 1) {
         // Jumping to a specific IP address in CODE_MEMORY
-        IP = literal_inst.operand1;
+        if (literal_inst.operand2) IP = literal_inst.operand1;
     } else {
         // Storing next instruction pointer (IP) in a specific data memory cell
         // (address)
-        DATA_MEMORY[inst.operand2] = IP + 1;
+        DATA_MEMORY[inst.operand2] = IP;
     }
 
     if (VERBOSE) jump_label_log(inst);
@@ -299,6 +309,7 @@ void stop(instruction inst) {
 }
 // Execute a single instruction in RAM
 void execute_instruction(instruction inst) {
+    printf("%d", IP+1);
     switch (inst.operation) {
         case 0:
             assign(inst);
@@ -334,7 +345,6 @@ void execute_instruction(instruction inst) {
 }
 // Execute instructions in RAM
 void execute_instructions() {
-    int IP;
     for (IP = 0; IP < total_instructions; IP++) {
         execute_instruction(CODE_MEMORY[IP]);
     }
