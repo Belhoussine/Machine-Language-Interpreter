@@ -209,9 +209,9 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 ```
 - *For Windows OS:*
 ```
-    >> interpreter <source_AL_file_name>
+    >> assembler <source_AL_file_name>
 
-    i.e:  interpreter source.al
+    i.e:  assembler source.al
 ```
 #### Explanation of AL operations:
 - **ASN**: Assign **operand1** to **operand2**

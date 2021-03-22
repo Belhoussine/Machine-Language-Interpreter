@@ -7,6 +7,7 @@
 #define GRN "\x1B[32m"
 #define YEL "\x1B[33m"
 #define BLU "\x1B[34m"
+// #define BLU "\033[22;34m"
 #define MAG "\x1B[35m"
 #define CYN "\x1B[36m"
 #define WHT "\x1B[37m"
@@ -392,6 +393,7 @@ void execute_instructions() {
         printf(BOLD GRN "\n=============PROGRAM-OUTPUT===========\n" RESET);
         printf("%s", STDOUT);
     }
+    printf(RESET);
 }
 
 void debug() {
@@ -419,7 +421,6 @@ int main(int argc, char *argv[]) {
     read_source_file(argv[1]);
 
     execute_instructions();
-
     // debug();
 
     return 0;
