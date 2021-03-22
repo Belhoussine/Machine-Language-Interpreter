@@ -117,6 +117,27 @@ The executable takes one or two command line arguments:
     -v : VERBOSE, logs all executed instructions sequentially.
 ```
 
+#### Explanation of ML operations:
+- **+0**: Assign operand1 to operand2
+- **+1**: Add operand1 to operand2 and  store result in **ACC**
+- **-1**: Subtract operand1 from operand2 and store result in **ACC**
+- **+2**: Multiply operand1 by operand2 and store result in **ACC**
+- **-2**: Divide operand1 by operand2 and store result in **ACC**
+- **+3**: Square of operand1 and store result in **operand2**
+- **-3**: Square root of operand1 and store result in **operand2**
+- **+4**: If operand1 equals operand2, put 1 in **ACC**
+- **-4**: If operand1 does not equal operand2, put 0 in **ACC**
+- **+5**: If operand1 is greater or equals to operand2 then put 1 in **ACC**
+- **-5**: If operand1 is less than operand2 then put 0 in **ACC**
+- **+6**: Operands is an address. We access the value inside of it and then put in the address of operand2.
+- **-6**: Operand1 is assigned to the address that is pointed by the address of operand2.
+- **+7**: Jump to the address in operand1 if the adress is operand2 contains 1
+- **-7**: Store instruction in the address pointed by operand2
+- **+8**: Read input from user and put in the address pointed by operand2
+- **-8**: Print the content of the address pointed by operand1
+- **+9** Stops the program from executing
+
+
 #### Interpreter implementation timeline:
 
 - [x] Read, line by line, file containing Numeric Machine Language (ML).
