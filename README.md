@@ -146,7 +146,7 @@ The syntax of this assembly language is the following:
 - **Type** describes the type of the next operand. "L" means the next operand is a literal. "A" means the next operand is an address.
 - **Operand1**: 4 digits - ranges from 0000 to 9999 (10000 values)
 - **Operand2**: 4 digits - ranges from 0000 to 9999 (10000 values)
-- The instruction: ASN L2341 A1001 could be described ass follows:
+- The instruction: ASN L2341 A1001 could be described as follows:
 
 | operation  | type     |operand1  |type      | operand2      |
 | ---------  | ---------| ---------|----------|---------------|
@@ -158,7 +158,7 @@ The syntax of this assembly language is the following:
 - This language will be translated into ML.
 
 #### Full Operations table:
-| OpCode | OpCode | Description      | OpCode | OpCode | Description    |
+| AL Operation | ML Operation | Description   | AL Operation | ML Operation | Description    |
 | ------ |--------|------------------| ------ |--------|----------------|
 | ASN    | +0     | assign           |        | -0     | (not used)     |
 | ADD    | +1     | +                | SUB    | -1     | -              |
@@ -192,8 +192,29 @@ The assembler executable outputs a file named ***source.nml*** that contains the
 
     i.e:  interpreter source.al
 ```
+#### Explanation of operations:
+- **ASN**: Assign operand1 to operand2
+- **ADD**: Add operand1 to operand2
+- **SUB**: Subtract operand1 from operand2
+- **MUL**: Multiply operand1 by operand2
+- **DIV**: Divide operand1 by operand2
+- **SQR**: Square of operand1
+- **SQRT**: Square root of operand1
+- **EQL**: If operand1 equals operand2, put 1 in **ACC**
+- **NEQL**: If operand1 does not equal operand2, put 0 in **ACC**
+- **GOE**: If operand1 is greater or equals to operand2 then put 1 in **ACC**
+- **LT**: If operand1 is less than operand2 then put 0 in **ACC**
+- **ATV**: Operands is an address. We access the value inside of it and then put in the address of operand2.
+- **VTA**: Operand1 is assigned to the address that is pointed by the address of operand2.
+- **JMP**: Jump to the address in operand1 if the adress is operand2 contains 1
+- **LBL**: Store instruction in the address pointed by operand2
+- **READ**: Read input from user and put in the address pointed by operand2
+- **PRINT**: Print the content of the address pointed by operand1
+- **STOP** Stops the program from executing
+
 **NOTES:** 
 - The **#** character describes the start of a comment in assembly. The assembler will ignore lines that start with **#**
+- If the operand2 in print instruction is 9999 regardless of its type, it means it is \n.
 #### Assembler implementation timeline:
 - [x] Add a simple complexity algorithm for testing
 - [x] Add a medium complexity algorithm for testing
