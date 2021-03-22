@@ -110,7 +110,7 @@ instruction to_literal(instruction inst) {
 // Log info od assign function
 void assign_log(instruction inst) {
     if (inst.operands_type == 7) {
-        printf("[ASN] Storing ACC: %d in %d.\n", ACC, inst.operand2);
+        printf("[ASN] Storing ACC: %d in address %d.\n", ACC, inst.operand2);
     } else if (inst.operands_type == 8 || inst.operands_type == 9) {
         printf("[ASN] Storing %d in ACC.\n", inst.operand1);
     } else {
@@ -142,10 +142,10 @@ void multiply_divide_log(instruction inst) {
 // Log info of square_squareRoot function
 void square_squareRoot_log(instruction inst) {
     if (inst.sign_bit == 1)
-        printf("[SQR] Square of %d stored in %d. \n", inst.operand1,
+        printf("[SQR] Square of %d stored in address %d. \n", inst.operand1,
                inst.operand2);
     else
-        printf("[SQRT] Sqrt of %d stored in %d. \n", inst.operand1,
+        printf("[SQRT] Sqrt of %d stored in address %d. \n", inst.operand1,
                inst.operand2);
 }
 
